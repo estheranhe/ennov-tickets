@@ -41,7 +41,7 @@ public class TicketService {
     }
 
     public Ticket assignUser(Long ticketId, User user){
-        Ticket ticket = findById(ticketId);
+        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(() -> new NotFoundException("Ticket non trouvé"));
         ticket.setUser(user);
         return ticketRepository.save(ticket);
     }

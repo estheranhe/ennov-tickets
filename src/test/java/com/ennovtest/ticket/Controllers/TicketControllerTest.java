@@ -3,6 +3,7 @@ package com.ennovtest.ticket.Controllers;
 import com.ennovtest.ticket.Entities.Ticket;
 import com.ennovtest.ticket.Entities.TicketStatus;
 import com.ennovtest.ticket.Services.TicketService;
+import com.ennovtest.ticket.Services.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -12,6 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.mockito.Mockito.*;
+import org.springframework.http.MediaType;
 
 
 import java.util.ArrayList;
@@ -26,8 +28,11 @@ public class TicketControllerTest {
     @MockBean
     private TicketService ticketService;
 
+    @MockBean
+    private UserService userService;
+
     @Test
-    public void getTickets() throws Exception {
+    public void testGetTickets() throws Exception {
         List<Ticket> tickets = new ArrayList<>();
         Ticket ticketA = new Ticket();
         ticketA.setTitle("Test Ticket A");
@@ -47,6 +52,8 @@ public class TicketControllerTest {
         mockMvc.perform(get("/tickets"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
-                .andExpect(jsonPath("$[0].title()").value("Test Ticket A"));
+                .andExpect(jsonPath("$[0].title").value("Test Ticket A"));
+
+        verify(ticketService, times(1)).findAll();
     }
 }

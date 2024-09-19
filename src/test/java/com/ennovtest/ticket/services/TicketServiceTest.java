@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import com.ennovtest.ticket.Entities.Ticket;
 import com.ennovtest.ticket.Entities.TicketStatus;
+import com.ennovtest.ticket.Entities.User;
 import com.ennovtest.ticket.Repositories.TicketRepository;
+import com.ennovtest.ticket.Repositories.UserRepository;
 import com.ennovtest.ticket.Services.TicketService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,12 +17,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 public class TicketServiceTest {
     @Mock
     private TicketRepository ticketRepository;
+
+    @Mock
+    UserRepository userRepository;
 
     @InjectMocks
     private TicketService ticketService;
@@ -63,5 +69,29 @@ public class TicketServiceTest {
         assertNotNull(result);
         assertEquals(2, result.size());
         verify(ticketRepository, times(1)).findAll();
+    }
+
+    @Test
+    public void testAssignUser(){
+        Ticket ticket = new Ticket();
+        ticket.setTitle("Ticket User Test");
+        ticket.setDescription("Ceci est un ticket test à assigner à un utilisateur");
+
+        User user = new User();
+        user.setUsername("user assign test");
+        user.setEmail("test@mail.test1");
+
+        when(ticketRepository.save(any(Ticket.class))).thenReturn(ticket);
+        when(ticketRepository.findById(ticket.getId())).thenReturn(Optional.of(ticket));
+        when(ticketRepository.save(ticket)).thenReturn(ticket);
+//        when(ticketService.findById(ticket.getId())).thenReturn(ticket);
+//        when(ticketRepository.save(ticket)).thenReturn(ticket);
+
+        Ticket result = ticketService.assignUser(ticket.getId(), user);
+
+        assertNotNull(result);
+        assertEquals(user, result.getUser());
+        verify(ticketRepository).findById(ticket.getId());
+        verify(ticketRepository).save(ticket);
     }
 }
