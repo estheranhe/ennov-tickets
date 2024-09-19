@@ -1,5 +1,6 @@
 package com.ennovtest.ticket.Controllers;
 
+import com.ennovtest.ticket.DTOs.TicketDto;
 import com.ennovtest.ticket.Entities.Ticket;
 import com.ennovtest.ticket.Entities.User;
 import com.ennovtest.ticket.Services.TicketService;
@@ -30,17 +31,13 @@ public class TicketController {
     }
 
     @PostMapping
-    public Ticket createTicket(@RequestBody Ticket ticket){
-        return ticketService.save(ticket);
+    public Ticket createTicket(@RequestBody TicketDto ticketDto){
+        return ticketService.save(ticketDto);
     }
 
     @PutMapping("/{id}")
-    public Ticket updateTicket(@PathVariable Long id, @RequestBody Ticket ticket){
-        Ticket findTicket = ticketService.findById(id);
-        findTicket.setTitle(ticket.getTitle());
-        findTicket.setDescription(ticket.getDescription());
-        findTicket.setTicketStatus(ticket.getTicketStatus());
-        return ticketService.save(findTicket);
+    public Ticket updateTicket(@PathVariable Long id, @RequestBody TicketDto ticketDto){
+        return ticketService.update(id, ticketDto);
     }
 
     @PutMapping("/{id}/assign/{userId}")

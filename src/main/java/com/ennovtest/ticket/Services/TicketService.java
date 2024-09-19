@@ -1,5 +1,6 @@
 package com.ennovtest.ticket.Services;
 
+import com.ennovtest.ticket.DTOs.TicketDto;
 import com.ennovtest.ticket.Entities.Ticket;
 import com.ennovtest.ticket.Entities.User;
 import com.ennovtest.ticket.Exceptions.NotFoundException;
@@ -23,7 +24,19 @@ public class TicketService {
         return ticketRepository.findById(id).orElseThrow(() -> new NotFoundException("Ticket non trouvé"));
     }
 
-    public Ticket save(Ticket ticket){
+    public Ticket save(TicketDto ticketDto){
+        Ticket ticket = new Ticket();
+        ticket.setTitle(ticketDto.getTitle());
+        ticket.setDescription(ticketDto.getDescription());
+        ticket.setTicketStatus(ticketDto.getTicketStatus());
+        return ticketRepository.save(ticket);
+    }
+
+    public Ticket update(Long id, TicketDto ticketDto){
+        Ticket ticket = findById(id);
+        ticket.setTitle(ticketDto.getTitle());
+        ticket.setDescription(ticketDto.getDescription());
+        ticket.setTicketStatus(ticketDto.getTicketStatus());
         return ticketRepository.save(ticket);
     }
 

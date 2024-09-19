@@ -30,7 +30,6 @@ public class Ticket {
 
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_id")
-    @JsonIgnore
     private User user;
 
     public void setTicketStatus(TicketStatus ticketStatus) {

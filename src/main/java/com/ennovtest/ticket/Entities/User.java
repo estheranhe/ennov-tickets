@@ -1,5 +1,6 @@
 package com.ennovtest.ticket.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -26,6 +27,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.DETACH, orphanRemoval = true)
     @OrderBy
+    @JsonIgnore
     private List<Ticket> tickets = new ArrayList<>();
 
     public void setEmail(String email) {
