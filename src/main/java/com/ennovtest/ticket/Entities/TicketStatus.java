@@ -1,7 +1,7 @@
 package com.ennovtest.ticket.Entities;
 
 public enum TicketStatus {
-    IN_PROGRESS,
+    IN_PROGRESS ,
     COMPLETED,
     CANCELLED
 }

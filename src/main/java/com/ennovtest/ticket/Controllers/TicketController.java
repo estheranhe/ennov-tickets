@@ -32,7 +32,8 @@ public class TicketController {
 
     @PostMapping
     public Ticket createTicket(@RequestBody TicketDto ticketDto){
-        return ticketService.save(ticketDto);
+        Ticket ticket = ticketService.convertDtoToEntity(ticketDto);
+        return ticketService.save(ticket);
     }
 
     @PutMapping("/{id}")

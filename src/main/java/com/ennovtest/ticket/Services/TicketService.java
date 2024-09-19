@@ -24,11 +24,7 @@ public class TicketService {
         return ticketRepository.findById(id).orElseThrow(() -> new NotFoundException("Ticket non trouvé"));
     }
 
-    public Ticket save(TicketDto ticketDto){
-        Ticket ticket = new Ticket();
-        ticket.setTitle(ticketDto.getTitle());
-        ticket.setDescription(ticketDto.getDescription());
-        ticket.setTicketStatus(ticketDto.getTicketStatus());
+    public Ticket save(Ticket ticket){
         return ticketRepository.save(ticket);
     }
 
@@ -37,7 +33,7 @@ public class TicketService {
         ticket.setTitle(ticketDto.getTitle());
         ticket.setDescription(ticketDto.getDescription());
         ticket.setTicketStatus(ticketDto.getTicketStatus());
-        return ticketRepository.save(ticket);
+        return save(ticket);
     }
 
     public void delete(Long id){
@@ -48,6 +44,14 @@ public class TicketService {
         Ticket ticket = findById(ticketId);
         ticket.setUser(user);
         return ticketRepository.save(ticket);
+    }
+
+    public Ticket convertDtoToEntity(TicketDto ticketDto){
+        Ticket ticket = new Ticket();
+        ticket.setTitle(ticketDto.getTitle());
+        ticket.setDescription(ticketDto.getDescription());
+        ticket.setTicketStatus(ticketDto.getTicketStatus());
+        return ticket;
     }
 
 }
