@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class TicketService {
@@ -24,7 +25,8 @@ public class TicketService {
         return ticketRepository.findById(id).orElseThrow(() -> new NotFoundException("Ticket non trouvé"));
     }
 
-    public Ticket save(Ticket ticket){
+    public Ticket save(TicketDto ticketDto){
+        Ticket ticket = convertDtoToEntity(ticketDto);
         return ticketRepository.save(ticket);
     }
 
@@ -32,8 +34,8 @@ public class TicketService {
         Ticket ticket = findById(id);
         ticket.setTitle(ticketDto.getTitle());
         ticket.setDescription(ticketDto.getDescription());
-        ticket.setTicketStatus(ticketDto.getTicketStatus());
-        return save(ticket);
+        ticket.setStatus(ticketDto.getTicketStatus().toString());
+        return ticketRepository.save(ticket);
     }
 
     public void delete(Long id){
@@ -50,7 +52,8 @@ public class TicketService {
         Ticket ticket = new Ticket();
         ticket.setTitle(ticketDto.getTitle());
         ticket.setDescription(ticketDto.getDescription());
-        ticket.setTicketStatus(ticketDto.getTicketStatus());
+        System.out.println(ticketDto.getTicketStatus());
+        ticket.setStatus(ticketDto.getTicketStatus().toString());
         return ticket;
     }
 

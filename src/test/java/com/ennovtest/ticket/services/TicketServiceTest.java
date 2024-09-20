@@ -2,6 +2,8 @@ package com.ennovtest.ticket.services;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+
+import com.ennovtest.ticket.DTOs.TicketDto;
 import com.ennovtest.ticket.Entities.Ticket;
 import com.ennovtest.ticket.Entities.TicketStatus;
 import com.ennovtest.ticket.Entities.User;
@@ -33,17 +35,20 @@ public class TicketServiceTest {
 
     @Test
     public void testCreateTicket(){
+        TicketDto ticketDto = new TicketDto("Ticket Test 1", "Ceci est un ticket test", TicketStatus.CANCELLED);
         Ticket ticket = new Ticket();
+        ticket.setStatus(TicketStatus.CANCELLED.toString());
         ticket.setTitle("Ticket Test 1");
         ticket.setDescription("Ceci est un ticket test");
 
         when(ticketRepository.save(any(Ticket.class))).thenReturn(ticket);
 
-        Ticket createdTicket = ticketService.save(ticket);
+        Ticket createdTicket = ticketService.save(ticketDto);
 
-        assertNotNull(createdTicket);
-        assertEquals("Ticket Test 1", createdTicket.getTitle());
-        verify(ticketRepository, times(1)).save(ticket);
+        verify(ticketRepository).save(any(Ticket.class));
+        assertEquals(ticket.getTitle(), createdTicket.getTitle());
+        assertEquals(ticket.getStatus(), createdTicket.getStatus());
+
     }
 
     @Test
@@ -52,12 +57,12 @@ public class TicketServiceTest {
         Ticket ticketA = new Ticket();
         ticketA.setTitle("Test Ticket A");
         ticketA.setDescription("Ceci est le ticket test A");
-        ticketA.setTicketStatus(TicketStatus.IN_PROGRESS);
+        ticketA.setStatus(TicketStatus.IN_PROGRESS.toString());
 
         Ticket ticketB = new Ticket();
         ticketB.setTitle("Test Ticket B");
         ticketB.setDescription("Ceci est le ticket test B");
-        ticketB.setTicketStatus(TicketStatus.IN_PROGRESS);
+        ticketB.setStatus(TicketStatus.IN_PROGRESS.toString());
 
         tickets.add(ticketA);
         tickets.add(ticketB);

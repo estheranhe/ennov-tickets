@@ -10,7 +10,7 @@ import org.hibernate.type.SqlTypes;
 @Table(name = "ticket")
 public class Ticket {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -23,18 +23,32 @@ public class Ticket {
     @JdbcTypeCode(SqlTypes.CHAR)
     private String title;
 
-    @Enumerated(EnumType.STRING)
+    /*@Enumerated(EnumType.STRING)
     @Column(name = "ticket_status")
     @JdbcTypeCode(SqlTypes.CHAR)
-    private TicketStatus ticketStatus;
+    private TicketStatus ticketStatus;*/
+    @Column(name = "status")
+    private String status;
 
-    @ManyToOne(cascade = CascadeType.DETACH)
+    @ManyToOne(cascade = {CascadeType.REMOVE})
     @JoinColumn(name = "user_id")
     private User user;
 
-    public void setTicketStatus(TicketStatus ticketStatus) {
-        this.ticketStatus = ticketStatus;
+    public String getStatus() {
+        return status;
     }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+//    public void setTicketStatus(TicketStatus ticketStatus) {
+//        this.ticketStatus = ticketStatus;
+//    }
 
     public User getUser() {
         return user;
@@ -52,9 +66,9 @@ public class Ticket {
         this.description = description;
     }
 
-    public TicketStatus getTicketStatus() {
-        return ticketStatus;
-    }
+//    public TicketStatus getTicketStatus() {
+//        return ticketStatus;
+//    }
 
     public String getDescription() {
         return description;

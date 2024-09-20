@@ -1,5 +1,6 @@
 package com.ennovtest.ticket.Services;
 
+import com.ennovtest.ticket.DTOs.UserDto;
 import com.ennovtest.ticket.Entities.User;
 import com.ennovtest.ticket.Exceptions.NotFoundException;
 import com.ennovtest.ticket.Repositories.UserRepository;
@@ -22,11 +23,27 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(() -> new NotFoundException("Utilisateur non trouvé"));
     }
 
-    public User save(User user){
+    public User save(UserDto userDto){
+        User user = convertUserDtoToEntity(userDto);
+        return userRepository.save(user);
+    }
+
+    public User update(Long id, UserDto userDto){
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException("Utilisateur non trouvé"));
+        user.setUsername(userDto.getUsername());
+        user.setEmail(userDto.getEmail());
         return userRepository.save(user);
     }
 
     public void delete(Long id){
         userRepository.deleteById(id);
     }
+
+    public User convertUserDtoToEntity(UserDto userDto){
+        User user = new User();
+        user.setEmail(userDto.getEmail());
+        user.setUsername(userDto.getUsername());
+        return user;
+    }
+
 }

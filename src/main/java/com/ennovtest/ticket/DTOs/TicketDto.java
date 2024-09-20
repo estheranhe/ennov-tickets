@@ -10,7 +10,7 @@ import java.io.Serializable;
  */
 @Data
 public class TicketDto implements Serializable {
-    private final String description;
     private final String title;
+    private final String description;
     private final TicketStatus ticketStatus;
 }

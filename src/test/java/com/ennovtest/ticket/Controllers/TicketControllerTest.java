@@ -37,12 +37,12 @@ public class TicketControllerTest {
         Ticket ticketA = new Ticket();
         ticketA.setTitle("Test Ticket A");
         ticketA.setDescription("Ceci est le ticket test A");
-        ticketA.setTicketStatus(TicketStatus.IN_PROGRESS);
+        ticketA.setStatus(TicketStatus.IN_PROGRESS.toString());
 
         Ticket ticketB = new Ticket();
         ticketB.setTitle("Test Ticket B");
         ticketB.setDescription("Ceci est le ticket test B");
-        ticketB.setTicketStatus(TicketStatus.CANCELLED);
+        ticketB.setStatus(TicketStatus.CANCELLED.toString());
 
         tickets.add(ticketA);
         tickets.add(ticketB);
