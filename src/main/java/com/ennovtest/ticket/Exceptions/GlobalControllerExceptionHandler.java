@@ -15,9 +15,19 @@ public class GlobalControllerExceptionHandler {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(InvalidDataException.class)
+    public ResponseEntity<String> handleInvalidData(InvalidDataException e){
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<String> handleNotFound(RuntimeException e){
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleOtherException(Exception e){
+        return new ResponseEntity<>("Oups Une erreur est Survenue!", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
